@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Battery Runtime Calculator</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: auto; padding: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { margin-left: 10px; width: 60px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Battery Runtime on 2.5 Units (kWh)</h2>
+  <label>LED Tube Light (20W): <input type="number" id="ledTube" value="0"></label>
+  <label>Normal Tube Light (45W): <input type="number" id="normalTube" value="0"></label>
+  <label>Ceiling Fan (67W): <input type="number" id="fan" value="0"></label>
+  <label>LED TV (85W): <input type="number" id="tv" value="0"></label>
+  <label>Refrigerator (150W): <input type="number" id="fridge" value="0"></label>
+  <label>Cooler (200W): <input type="number" id="cooler" value="0"></label>
+  <label>1 Ton AC (1000W): <input type="number" id="ac1" value="0"></label>
+  <label>1.5 Ton AC (1500W): <input type="number" id="ac15" value="0"></label>
+
+  <button onclick="calculateRuntime()">Calculate Runtime</button>
+  <div id="result"></div>
+
+  <script>
+    function calculateRuntime() {
+      const powers = {
+        ledTube: 0.020,
+        normalTube: 0.045,
+        fan: 0.067,
+        tv: 0.085,
+        fridge: 0.150,
+        cooler: 0.200,
+        ac1: 1.000,
+        ac15: 1.500
+      };
+
+      let totalKW = 0;
+      for (let id in powers) {
+        const count = parseInt(document.getElementById(id).value) || 0;
+        totalKW += count * powers[id];
+      }
+
+      let result = document.getElementById("result");
+      if (totalKW === 0) {
+        result.innerText = "Please select at least one appliance.";
+      } else {
+        const runtime = (2.5 / totalKW).toFixed(2);
+        result.innerHTML = `<p>Total Power Draw: ${totalKW.toFixed(3)} kW</p>
+                            <p>Estimated Runtime: <strong>${runtime}</strong> hours</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
